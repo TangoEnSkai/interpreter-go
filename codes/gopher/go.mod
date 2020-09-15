@@ -1,3 +1,3 @@
-module github.com/TangoEnSkai/interpreter-go
+module gopher
 
 go 1.13
