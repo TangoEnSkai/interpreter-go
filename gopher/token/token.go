@@ -13,19 +13,19 @@ type Token struct {
 }
 
 const (
-	ILLEGAL = "ILLEGAL"	// `ILLEGAL` signifies a token/character we don't know about
-	EOF = "EOF"	// `EOF` stands for "end of file", tells our parser later on, for stopping parsing
+	ILLEGAL = "ILLEGAL" // `ILLEGAL` signifies a token/character we don't know about
+	EOF     = "EOF"     // `EOF` stands for "end of file", tells our parser later on, for stopping parsing
 
 	// Identifiers + literals
-	IDENT = "IDENT"	// add, foobar, x, y, ...
-	INT = "INT"	// 12321412
+	IDENT = "IDENT" // add, foobar, x, y, ...
+	INT   = "INT"   // 12321412
 
 	// Operators
 	ASSIGN = "="
-	PLUS = "+"
+	PLUS   = "+"
 
 	// Delimiters
-	COMMA = ","
+	COMMA     = ","
 	SEMICOLON = ";"
 
 	LPAREN = "("
@@ -35,6 +35,17 @@ const (
 
 	// keywords
 	FUNCTION = "fn"
-	LET = "let"
-
+	LET      = "let"
 )
+
+var keywords = map[string]TokenType {
+	"fn": FUNCTION,
+	"let": LET,
+}
+
+func LookupIdent(ident string) TokenType {
+	if tok, ok := keywords[ident]; ok {
+		return tok
+	}
+	return IDENT
+}
