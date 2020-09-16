@@ -11,7 +11,7 @@ import (
 	"github.com/TangoEnSkai/interpreter-go/gopher/token"
 )
 
-const PROMPT = ">> "
+const PROMPT = "ʕ ◔ϖ◔ʔ >> "
 
 func Start(in io.Reader, out io.Writer) {
 	scanner := bufio.NewScanner(in)
@@ -26,6 +26,7 @@ func Start(in io.Reader, out io.Writer) {
 		line := scanner.Text()
 
 		l := lexer.New(line)
+		fmt.Println(l)
 
 		for tok := l.NextToken(); tok.Type != token.EOF; tok = l.NextToken() {
 			fmt.Printf("%+v\n", tok)
