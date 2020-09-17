@@ -1,6 +1,8 @@
 package parser
 
 import (
+	"fmt"
+
 	"github.com/TangoEnSkai/interpreter-go/gopher/ast"
 	"github.com/TangoEnSkai/interpreter-go/gopher/lexer"
 	"github.com/TangoEnSkai/interpreter-go/gopher/token"
@@ -18,12 +20,18 @@ type Parser struct {
 	// remember lexer works per character, whereas parser works per token.
 	curToken  token.Token
 	peekToken token.Token
+
+	// `Parser` has an error field as slice of strings.
+	// this field is expected to be initialised by calling `New` function,
+	// and it has an helper function called `peekError`
+	errors []string
 }
 
 // New is a function that gets lexer to return new parser.
 func New(l *lexer.Lexer) *Parser {
 	p := &Parser{
 		l: l,
+		errors: []string{},
 	}
 
 	// Read two tokens, so `curToken` and `peekToken` are both set
@@ -31,6 +39,18 @@ func New(l *lexer.Lexer) *Parser {
 	p.nextToken()
 
 	return p
+}
+
+// Errors methods allow us to be able to check if the parser encountered any errors.
+func (p *Parser) Errors() []string {
+	return p.errors
+}
+
+// peekError is a method it can add an error to `errors` when the type of `peekToken`
+// does not match the expectation.
+func (p *Parser) peekError(t token.TokenType) {
+	msg := fmt.Sprintf("expected next token to be %s, got %s instead", t, p.peekToken.Type)
+	p.errors = append(p.errors, msg)
 }
 
 // nextToken is a helper method that advances both `curToken` and `peekToken`.
