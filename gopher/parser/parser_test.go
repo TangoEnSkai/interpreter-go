@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-// mockInput is used for simple string mock rather than having an actual mock or stub out lexer and
+// Input is used for simple string mock rather than having an actual mock or stub out lexer and
 // provide source code as input instead of tokens:
 // - this makes more readable / understandable
 // - also we can separate our concern on the fact that
@@ -25,6 +25,7 @@ func TestLetStatements(t *testing.T) {
 	p := parser.New(l)
 
 	program := p.ParseProgram()
+	checkParserErrors(t, p)
 	if program == nil {
 		t.Fatalf("ParseProgram() returned nil")
 	}
@@ -74,4 +75,21 @@ func testLetStatement(t *testing.T, s ast.Statement, name string) bool {
 	}
 
 	return true
+}
+
+// checkParserErrors checks the parser for errors and if it has any,
+// it prints them as test errors and stops the execution of the current test.
+func checkParserErrors(t *testing.T, p *parser.Parser) {
+	errors := p.Errors()
+
+	if len(errors) == 0 {
+		return
+	}
+
+	t.Errorf("parser has %d errors", len(errors))
+
+	for _, msg := range errors {
+		t.Errorf("parser error: %q", msg)
+	}
+	t.FailNow()
 }
