@@ -67,11 +67,16 @@ func (p *Parser) parseStatement() ast.Statement {
 	}
 }
 
+// parseLetStatement is a method that construct an `*ast.LetStatement` node
+// with the token it is currently looking on (a `token.LET` token), then
+// advances the tokens whilst making assertions about the next token
+// with calls to `expectPeek`.
 func (p *Parser) parseLetStatement() *ast.LetStatement {
 	stmt := &ast.LetStatement{
 		Token: p.curToken,
 	}
 
+	// expect `token.IDENT` uses to construct an `ast.Identifier` node
 	if !p.expectPeek(token.IDENT) {
 		return nil
 	}
@@ -81,10 +86,14 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 		Value: p.curToken.Literal,
 	}
 
+	// we expect equal sign
 	if !p.expectPeek(token.ASSIGN) {
 		return nil
 	}
 
+	// after `let x =` we expect `<expressions>` following the equal sign until it faces `;`
+	// for example, if we have `let x = 1 + 2 + 3;`, this iteration scans
+	// after `=` until we get `;`
 	// TODO: we are skipping the expressions until we encounter a semicolon
 	for !p.curTokenIs(token.SEMICOLON) {
 		p.nextToken()
@@ -93,6 +102,8 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 	return stmt
 }
 
+// `curTokenIs` is a method that does the same job as:
+// `p.curToken.Type != token.EOF` as `!p.curTokenIs(token.EOF)`
 func (p *Parser) curTokenIs(t token.TokenType) bool {
 	return p.curToken.Type == t
 }
@@ -101,7 +112,13 @@ func (p *Parser) peekTokenIs(t token.TokenType) bool {
 	return p.peekToken.Type == t
 }
 
+// `expectPeek` is one of the "assertion functions" nearly all parsers share.
+// the main goal of this method is to enforce the correctness of the order of tokens
+// by checking the type of the next token.
+// precisely, it checks the type of the `peekToken` and only if the type is correct,
+// does it advance the tokens by calling `nextToken`, which is common in parsing.
 func (p *Parser) expectPeek(t token.TokenType) bool {
+	// checking the type of the next token
 	if p.peekTokenIs(t) {
 		p.nextToken()
 		return true
