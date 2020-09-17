@@ -61,7 +61,7 @@ could be represented by an AST:
   | *ast.Identifier |   | *ast.Expression |
    -----------------     -----------------
 
- */
+*/
 type Program struct {
 	Statements []Statement
 }
@@ -78,8 +78,8 @@ func (p *Program) TokenLiteral() string {
 // `Name` to hold the identifier of the binding
 // `Value` for the expression that produces the value.
 type LetStatement struct {
-	Token token.Token	// the token.LET token
-	Name *Identifier
+	Token token.Token // the token.LET token
+	Name  *Identifier
 	Value Expression
 }
 
@@ -97,7 +97,7 @@ func (ls *LetStatement) TokenLiteral() string {
 // reason why we handle this as expression is to keep things simple.
 // `Identifier`s in other parts of the Gopher program DO produce values.
 type Identifier struct {
-	Token token.Token	// the token.IDENT token
+	Token token.Token // the token.IDENT token
 	Value string
 }
 
@@ -105,4 +105,3 @@ func (i *Identifier) expressionNode() {}
 func (i *Identifier) TokenLiteral() string {
 	return i.Token.Literal
 }
-

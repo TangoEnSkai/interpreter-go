@@ -30,7 +30,7 @@ type Parser struct {
 // New is a function that gets lexer to return new parser.
 func New(l *lexer.Lexer) *Parser {
 	p := &Parser{
-		l: l,
+		l:      l,
 		errors: []string{},
 	}
 
@@ -146,4 +146,3 @@ func (p *Parser) expectPeek(t token.TokenType) bool {
 		return false
 	}
 }
-

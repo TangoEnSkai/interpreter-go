@@ -1,10 +1,10 @@
 package parser_test
 
 import (
-	"testing"
 	"github.com/TangoEnSkai/interpreter-go/gopher/ast"
 	"github.com/TangoEnSkai/interpreter-go/gopher/lexer"
 	"github.com/TangoEnSkai/interpreter-go/gopher/parser"
+	"testing"
 )
 
 // mockInput is used for simple string mock rather than having an actual mock or stub out lexer and
@@ -34,10 +34,10 @@ func TestLetStatements(t *testing.T) {
 
 	tests := []struct {
 		expectedIdentifier string
-	} {
-		{"x"}	,
-		{"y"}	,
-		{"foobar"}	,
+	}{
+		{"x"},
+		{"y"},
+		{"foobar"},
 	}
 
 	for i, tt := range tests {
