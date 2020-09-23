@@ -90,6 +90,21 @@ func (ls *LetStatement) TokenLiteral() string {
 	return ls.Token.Literal
 }
 
+// ReturnStatement a structural representation for `return` statement in the language.
+// By the language definition, we need a keyword `return` and a following expression,
+// this structure will represent the statement into our AST.
+type ReturnStatement struct {
+	Token       token.Token // the `return` token
+	ReturnValue Expression
+}
+
+// these two methods: `statementNode()` and `TokenLiteral()` satisfy
+// the `Statement` and `Node` interface, respectively.
+func (rs *ReturnStatement) statementNode() {}
+func (rs *ReturnStatement) TokenLiteral() string {
+	return rs.Token.Literal
+}
+
 // Identifier is a struct type to hold the identifier of the binding.
 // for example, in the case of `let x = 5;`
 // for `x`, we have `Identifier` struct type which implements the `Expression` interface.
