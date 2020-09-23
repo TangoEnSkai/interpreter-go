@@ -7,19 +7,26 @@ import (
 	"testing"
 )
 
-// Input is used for simple string mock rather than having an actual mock or stub out lexer and
-// provide source code as input instead of tokens:
-// - this makes more readable / understandable
-// - also we can separate our concern on the fact that
-//   lexer can blow up the test for the parser and generate unneeded noise
-const mockInput = `
+const (
+	// `letInput` is used for simple string mock rather than having an actual mock or stub out lexer and
+	// provide source code as input instead of tokens:
+	// - this makes more readable / understandable
+	// - also we can separate our concern on the fact that
+	//   lexer can blow up the test for the parser and generate unneeded noise
+	letInput = `
 let x = 5;
 let y = 10;
 let foobar = 838383;
 `
+	returnInput = `
+return 5;
+return 10;
+return 993322;
+`
+)
 
 func TestLetStatements(t *testing.T) {
-	input := mockInput
+	input := letInput
 
 	l := lexer.New(input)
 	p := parser.New(l)
@@ -92,4 +99,29 @@ func checkParserErrors(t *testing.T, p *parser.Parser) {
 		t.Errorf("parser error: %q", msg)
 	}
 	t.FailNow()
+}
+
+func TestReturnStatements(t *testing.T) {
+	input := returnInput
+
+	l := lexer.New(input)
+	p := parser.New(l)
+
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	if len(program.Statements) != 3 {
+		t.Fatalf("program.Statements does not contain 3 statemetns. got=%d", len(program.Statements))
+	}
+
+	for _, stmt := range program.Statements {
+		returnStmt, ok := stmt.(*ast.ReturnStatement)
+		if !ok {
+			t.Errorf("stmt not *ast.returnStatement. got=%T", stmt)
+			continue
+		}
+		if returnStmt.TokenLiteral() != "return" {
+			t.Errorf("returnStmt.TokenLiteral not `return`, got=%q", returnStmt.TokenLiteral())
+		}
+	}
 }
