@@ -82,6 +82,8 @@ func (p *Parser) parseStatement() ast.Statement {
 	switch p.curToken.Type {
 	case token.LET:
 		return p.parseLetStatement()
+	case token.RETURN:
+		return p.parseReturnStatement()
 	default:
 		return nil
 	}
@@ -114,6 +116,21 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 	// after `let x =` we expect `<expressions>` following the equal sign until it faces `;`
 	// for example, if we have `let x = 1 + 2 + 3;`, this iteration scans
 	// after `=` until we get `;`
+	// TODO: we are skipping the expressions until we encounter a semicolon
+	for !p.curTokenIs(token.SEMICOLON) {
+		p.nextToken()
+	}
+
+	return stmt
+}
+
+func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
+	stmt := &ast.ReturnStatement{
+		Token:       p.curToken,
+	}
+
+	p.nextToken()
+
 	// TODO: we are skipping the expressions until we encounter a semicolon
 	for !p.curTokenIs(token.SEMICOLON) {
 		p.nextToken()
