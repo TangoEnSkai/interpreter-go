@@ -3,10 +3,10 @@
 package token
 
 // TokenType allows us to use many different values as `TokenTypes`,
-// which in turn allows us to distinguish between different types of tokens
+// which in turn allows us to distinguish between different types of tokens.
 type TokenType string
 
-// Token defines the language's token data structure
+// Token defines the language's token data structure.
 type Token struct {
 	Type    TokenType
 	Literal string
@@ -16,11 +16,11 @@ const (
 	ILLEGAL = "ILLEGAL" // `ILLEGAL` signifies a token/character we don't know about
 	EOF     = "EOF"     // `EOF` stands for "end of file", tells our parser later on, for stopping parsing
 
-	// Identifiers + literals
+	// Identifiers + literals.
 	IDENT = "IDENT" // add, foobar, x, y, ...
 	INT   = "INT"   // 12321412
 
-	// Operators
+	// Operators.
 	ASSIGN   = "="
 	PLUS     = "+"
 	MINUS    = "-"
@@ -34,7 +34,7 @@ const (
 	EQ     = "=="
 	NOT_EQ = "!="
 
-	// Delimiters
+	// Delimiters.
 	COMMA     = ","
 	SEMICOLON = ";"
 
@@ -43,7 +43,7 @@ const (
 	LBRACE = "{"
 	RBRACE = "}"
 
-	// keywords
+	// keywords.
 	FUNCTION = "fn"
 	LET      = "let"
 	TRUE     = "true"

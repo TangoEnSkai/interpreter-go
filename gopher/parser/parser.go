@@ -8,7 +8,7 @@ import (
 	"github.com/TangoEnSkai/interpreter-go/gopher/token"
 )
 
-// Parser is a struct which has three fields: `l`, `curToken`, `peekToken`
+// Parser is a struct which has three fields: `l`, `curToken`, `peekToken`.
 type Parser struct {
 	// pointer to an instance of the lexer, on which we repeatedly call `NextToken()`
 	// to get the next token in the input
@@ -77,7 +77,7 @@ func (p *Parser) ParseProgram() *ast.Program {
 // parseStatement constructs the root note of the AST, an `*ast.Program`,
 // then it iterates over every token in the input until it encounters
 // the end of file, `token.EOF` token.
-// this can be done by repeatedly calling `nextToken`
+// this can be done by repeatedly calling `nextToken`.
 func (p *Parser) parseStatement() ast.Statement {
 	switch p.curToken.Type {
 	case token.LET:
@@ -140,7 +140,7 @@ func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
 }
 
 // `curTokenIs` is a method that does the same job as:
-// `p.curToken.Type != token.EOF` as `!p.curTokenIs(token.EOF)`
+// `p.curToken.Type != token.EOF` as `!p.curTokenIs(token.EOF)`.
 func (p *Parser) curTokenIs(t token.TokenType) bool {
 	return p.curToken.Type == t
 }
